@@ -1,6 +1,7 @@
 package dev.robingenz.capacitorjs.plugins.firebase.auth.handlers;
 
 import android.content.Intent;
+import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.PluginCall;
@@ -48,7 +49,12 @@ public class GoogleAuthProviderHandler {
             AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
             pluginImplementation.handleSuccessfulSignIn(call, credential, idToken);
         } catch (ApiException exception) {
-            pluginImplementation.handleFailedSignIn(call, null, exception);
+            String Message = "Error Message: " + exception.getMessage() + " code: " + exception.getStatusCode();
+            Toast toast = Toast.makeText(pluginImplementation.getPlugin().getContext(),
+                    Message,
+                    Toast.LENGTH_LONG);
+            toast.show();
+            pluginImplementation.handleFailedSignIn(call, Message, exception);
         }
     }
 }
